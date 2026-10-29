@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<!-- Dit au navigateur que c'est une page HTML moderne (HTML5) -->
+<html lang="fr">
+<!-- lang="fr" : la page est en français (utile pour l'accessibilité et Google) -->
+<head>
+<!-- HEAD = informations sur la page, invisibles à l'écran -->
+<meta charset="utf-8">
+<!-- Permet d'afficher correctement les accents : é, è, à, ç -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- ESSENTIEL pour le responsive : la page s'adapte à la largeur du téléphone -->
+<meta name="referrer" content="no-referrer">
+<!-- Sécurité/vie privée : n'indique pas aux autres sites d'où vient le visiteur -->
+<title>Laurel WAMBALE – IA, cybersécurité, automatisation</title>
+<!-- Texte affiché dans l'onglet du navigateur et dans les résultats Google -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<!-- Charge deux polices gratuites de Google Fonts (titres et texte) -->
+<style>
+/* ===== CSS : tout ce qui concerne l'apparence ===== */
+/* :root = la racine de la page. On y définit des VARIABLES de couleur.
+Pour changer le look du site, il suffit de modifier ces valeurs. */
+
+    .lang{display:flex;gap:6px}
+    .lang button{font:inherit;padding:4px 10px;border-radius:6px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+    .lang button[aria-pressed="true"]{background:var(--acc);color:var(--acc);border-color:var(--acc)}
+    /*:root{ */ /* variables de couleur */
+    :root{
+    --bg:#010b16d6; /* couleur du fond /
+    --panel:#fff; /* fond des cartes /
+    --ink:#14213D; /* couleur du texte /
+    --mute:#55607A; /* texte secondaire (plus pâle) */
+    --line:#CBD5E4; /* couleur des bordures /
+    --acc:#2F5BFF; /* couleur d'accent (boutons, liens) */
+    --acc-ink:#fff; /* texte sur fond d'accent /
+    --sig:#E8A100; /* petit détail jaune du « terminal » */
+    box-sizing:border-box;
+/* Les deux lignes suivantes évitent que le contenu passe sous l'encoche des téléphones */
+padding-top:env(safe-area-inset-top,0px);
+padding-bottom:env(safe-area-inset-bottom,0px);
+}
+/* MODE SOMBRE automatique : si le téléphone/ordi est en mode sombre,
+on remplace les couleurs par des versions foncées */
+@media (prefers-color-scheme:dark){
+:root:not([data-theme="light"]){
+--bg:#0F1626;--panel:#172036;--ink:#E8EDF7;--mute:#9AA8C4;
+--line:#2f3e64;--acc:#7C9BFF;--acc-ink:#0F1626;--sig:#F5B82E;
+color-scheme:dark;
+}
+}
+/* Même chose si on force le mode sombre avec data-theme="dark" */
+:root[data-theme="dark"]{
+--bg:#0F1626;--panel:#172036;--ink:#E8EDF7;--mute:#9AA8C4;
+--line:#2A3757;--acc:#7C9BFF;--acc-ink:#0F1626;--sig:#F5B82E;
+color-scheme:dark;
+}
+html{
+scroll-padding-top:env(safe-area-inset-top,0px);
+scroll-behavior:smooth; /* défilement doux quand on clique sur un lien du menu */
+}
+*,*::before,::after{box-sizing:border-box}
+/* Fait en sorte que padding et bordures soient inclus dans la largeur des éléments
+(sinon les calculs de taille deviennent compliqués) */
+body{
+margin:0; /* enlève la marge par défaut du navigateur */
+background:var(--bg); /* var(--bg) = utilise la variable définie plus haut */
+color:var(--ink);
+font:17px/1.6 "IBM Plex Sans",system-ui,sans-serif;
+/* taille 17px / hauteur de ligne 1.6 / police (avec police de secours si elle ne charge pas) */
+}
+h1,h2,h3{
+font-family:"Bricolage Grotesque","IBM Plex Sans",system-ui,sans-serif;
+line-height:1.1; /* lignes de titres serrées */
+margin:0;
+}
+a{color:inherit} /* les liens prennent la couleur du texte autour */
+:focus-visible{ /* contour visible quand on navigue au clavier (accessibilité) */
+outline:3px solid var(--acc);
+outline-offset:3px;
+}
+.wrap{ /* conteneur qui centre et limite la largeur du contenu */
+max-width:1040px;
+margin:0 auto; /* auto à gauche/droite = centré */
+padding:0 20px; /* petit espace sur les côtés pour le téléphone */
+}
+/* --- En-tête (nom + menu) --- */
+header.top{
+display:flex; /* flex = place les éléments côte à côte */
+justify-content:space-between; /* nom à gauche, menu à droite */
+align-items:center;
+padding:18px 0;
+gap:12px;
+flex-wrap:wrap; /* sur petit écran, passe à la ligne si pas assez de place */
+}
+.brand{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;text-decoration:none}
+nav a{margin-left:16px;text-decoration:none;color:var(--mute)}
+nav a:hover{color:var(--ink)} /* :hover = quand la souris passe dessus */
+/* --- Section d'accueil (hero) --- */
+.hero{padding:56px 0 40px}
+.hero h1{
+font-size:clamp(2.2rem,7vw,4.6rem);
+/* clamp(min, idéal, max) : le titre grandit avec l'écran mais reste entre 2.2rem et 4.6rem */
+font-weight:800;
+max-width:15ch; /* ch = largeur d'un caractère : limite à ~15 caractères par ligne */
+letter-spacing:-.02em;
+}
+.hero p.lead{max-width:56ch;color:var(--mute);margin:20px 0 28px;font-size:1.1rem}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+/* --- Boutons --- */
+.btn{
+display:inline-block;
+padding:12px 20px;
+border-radius:8px; /* coins arrondis */
+text-decoration:none; /* enlève le soulignement des liens */
+font-weight:500;
+border:2px solid var(--acc);
+}
+.btn.main{background:var(--acc);color:var(--acc-ink)} /* bouton principal : fond plein */
+.btn:hover{transform:translateY(-1px)} /* léger soulèvement au survol */
+/* --- Petit « terminal » animé --- */
+.log{
+margin-top:36px;
+max-width:620px;
+background:var(--panel);
+border:1px solid var(--line);
+border-left:5px solid var(--sig); /* trait jaune à gauche */
+border-radius:6px;
+padding:14px 16px;
+font:14px/1.7 ui-monospace,Menlo,Consolas,monospace; /* police « code » */
+min-height:7.6em; /* garde la hauteur fixe pendant l'animation */
+}
+.log b{color:var(--acc)}
+/* --- Sections générales --- */
+section{padding:48px 0}
+h2{font-size:clamp(1.6rem,4vw,2.3rem);margin-bottom:20px}
+/* --- Section À propos --- */
+.about{display:grid;gap:28px;grid-template-columns:1fr}
+/* grid = mise en grille. Ici : 1 seule colonne (téléphone) */
+.about p{max-width:62ch;margin:0 0 14px}
+.skills{display:flex;flex-wrap:wrap;gap:8px;padding:0;margin:0;list-style:none}
+.skills li{
+background:var(--panel);
+border:1px solid var(--line);
+padding:6px 12px;
+border-radius:999px; /* très arrondi = forme de « pilule » */
+font-size:15px;
+}
+/* --- Boutons de filtre des projets --- */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.filters button{
+font:inherit;
+padding:8px 16px;
+border-radius:999px;
+border:1px solid var(--line);
+background:var(--panel);
+color:var(--ink);
+cursor:pointer; /* la main apparaît au survol */
+}
+.filters button[aria-pressed="true"]{ /* le bouton actuellement sélectionné */
+background:var(--acc);
+color:var(--acc-ink);
+border-color:var(--acc);
+}
+/* --- Grille de projets --- */
+.grid{
+display:grid;
+gap:16px;
+grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+/* Magie du responsive : autant de colonnes que possible, chacune d'au moins 250px */
+}
+.card{
+background:var(--panel);
+border:1px solid var(--line);
+border-radius:10px;
+padding:20px;
+display:flex;
+flex-direction:column; /* éléments empilés verticalement */
+gap:10px;
+}
+.card h3{font-size:1.25rem}
+.card p{margin:0;color:var(--mute);font-size:15px}
+.card .tag{font-size:13px;color:var(--mute)}
+.card a{margin-top:auto;font-weight:500;color:var(--acc)} /* auto = lien poussé en bas de la carte */
+.card[hidden]{display:none} /* une carte « cachée » par le filtre disparaît */
+/* --- Contact et pied de page --- */
+.links{display:flex;gap:12px;flex-wrap:wrap}
+footer{padding:32px 0 40px;color:var(--mute);font-size:14px;border-top:1px solid var(--line)}
+/* --- Écrans larges (ordinateur) : À propos passe sur 2 colonnes --- */
+@media (min-width:820px){.about{grid-template-columns:1.4fr 1fr}}
+/* --- Respect des personnes qui désactivent les animations dans leur système --- */
+@media (prefers-reduced-motion:reduce){
+html{scroll-behavior:auto}
+.btn:hover{transform:none}
+}
+</style>
+</head>
+<body>
+<!-- BODY = tout ce qui est visible à l'écran -->
+<div class="wrap">
+<!-- Conteneur qui centre tout le contenu (voir .wrap en CSS) -->
+<header class="top">
+<!-- Logo/nom : le lien #haut ramène en haut de la page -->
+<a class="brand" href="#haut">Laurel WAMBALE</a>
+<!-- Menu : chaque lien pointe vers l'id d'une section (ex. id="apropos") -->
+<nav aria-label="Navigation principale">
+<a href="#apropos" data-i18n="nav_about">À propos</a>
+<a href="#projets" data-i18n="nav_projects">Projets</a>
+<a href="#contact" data-i18n="nav_contact">Contact</a>
+</nav>
+</header>
+<div class="lang" role="group" aria-label="Changer la langue">
+    <button type="button" data-lang="fr" aria-pressed="true">Fr</button>
+    <button type="button" data-lang="en" aria-pressed="false">En</button>
+</div>
+<main id="haut">
+<!-- MAIN = le contenu principal de la page -->
+<div class="hero">
+<!-- h1 = le titre principal (un seul par page, important pour Google) -->
+<h1 data-i18n="hero_title">J’automatise, je protège, je construis avec l’IA.</h1>
+<p class="lead" data-i18n="hero_lead">Étudiant en informatique appliquée à l’Université de Moncton. Je travaille sur l’intelligence artificielle, la cybersécurité et l’automatisation.</p>
+<div class="btns">
+<a class="btn main" href="#projets" data-i18n="projects_button">Voir mes projets</a>
+<!-- target="_blank" : ouvre dans un nouvel onglet.
+rel="noopener noreferrer" : protège ton site contre des failles de sécurité liées aux nouveaux onglets -->
+<a class="btn" href="https://github.com/Laurel-wambale" target="_blank" rel="noopener noreferrer">GitHub</a>
+<a class="btn" href="https://www.YouTube.com/@laurelwambaledevX" target="_blank" rel="noopener noreferrer">YouTube</a>
+</div>
+<!-- Cette boîte est remplie par le JavaScript (animation du terminal) -->
+<div class="log" id="log" aria-label="Journal d’activité" aria-live="off"></div>
+</div>
+<section id="apropos">
+<h2 data-i18n="about_title">À propos</h2>
+<div class="about">
+<div>
+<p>Je m’appelle Laurel WAMBALE. J’étudie à l’Université de Moncton, au Canada, et je passe mon temps à relier trois sujets : l’IA qui comprend, la sécurité qui protège et l’automatisation qui fait gagner du temps.</p>
+<p>Je construis ce portfolio pour montrer ce que je sais faire : du code, des projets concrets et une façon de résoudre les problèmes.</p>
+</div>
+<!-- ul = liste à puces ; li = un élément de la liste. Ajoute tes propres compétences ici -->
+<ul class="skills" aria-label="Compétences">
+<li>Python</li><li>C++</li></li><li>JavaScript</li><li>Git et GitHub</li><li>Linux</li><li>Sécurité réseau</li><li>Scripts d’automatisation</li><li>Apprentissage automatique</li>
+</ul>
+</div>
+</section>
+<section id="projets">
+<h2 data-i18n="projects_title">Projets</h2>
+<!-- Boutons de filtre. data-f = « catégorie » lue par le JavaScript.
+aria-pressed indique quel bouton est actif -->
+<div class="filters" role="group" aria-label="Filtrer par domaine">
+<button type="button" data-f="all" aria-pressed="true">Tous</button>
+<button type="button" data-f="ia" aria-pressed="false">IA</button>
+<button type="button" data-f="cyber" aria-pressed="false">Cybersécurité</button>
+<button type="button" data-f="auto" aria-pressed="false">Automatisation</button>
+</div>
+<div class="grid">
+<!-- Chaque projet = une « carte » (article).
+data-c = la catégorie du projet, comparée à data-f du bouton.
+POUR AJOUTER UN PROJET : copie une carte entière, change data-c, le titre, la description et le lien -->
+<article class="card" data-c="ia">
+<span class="tag">IA · exemple à remplacer</span>
+<h3>Assistant d’étude</h3>
+<p>Un outil qui résume des cours et génère des questions de révision.</p>
+<a href="https://github.com/Laurel-wambale/projet-ia" target="_blank" rel="noopener noreferrer" data-i18n="project_view_code">Voir le code</a>
+</article>
+<article class="card" data-c="cyber">
+<span class="tag">Cybersécurité · exemple à remplacer</span>
+<h3>Scanner de ports</h3>
+<p>Un script Python qui détecte les ports ouverts sur mon propre réseau de test.</p>
+<a href="https://github.com/Laurel-wambale/projet-cyber" target="_blank" rel="noopener noreferrer">Voir le code</a>
+</article>
+<article class="card" data-c="auto">
+<span class="tag">Automatisation · exemple à remplacer</span>
+<h3>Rapports automatiques</h3>
+<p>Un programme qui collecte des données et envoie un rapport chaque semaine.</p>
+<a href="https://github.com/Laurel-wambale/projet-auto" target="_blank" rel="noopener noreferrer">Voir le code</a>
+</article>
+</div>
+</section>
+<section id="contact">
+<h2 data-i18n="contact_title">Me joindre</h2>
+<div class="links">
+
+<!-- Remplace TON-PSEUDO par tes vrais noms d'utilisateur ( cad par les noms que tu souhaites , ca doit etre tes comptes) -->
+<a class="btn" href="https://github.com/Laurel-wambale" target="_blank" rel="noopener noreferrer" data-i18n="contact_github">GitHub</a>
+<a class="btn" href="https://www.linkedin.com/in/Laurel wambale" target="_blank" rel="noopener noreferrer" data-i18n="contact_linkedin">LinkedIn</a>
+<a class="btn" href="https://www.instagram.com/Laurel_gift_" target="_blank" rel="noopener noreferrer" data-i18n="contact_instagram">Instagram</a>
+<a class="btn" href="https://www.YouTube.com/@laurelwambaledevX" target="_blank" rel="noopener noreferrer" data-i18n="contact_youtube">YouTube</a>
+<!-- mailto: ouvre l'application courriel du visiteur -->
+<a class="btn main" href="mailto:ton.courriel@exemple.com" data-i18n="contact_email">Écrire un courriel</a>
+
+</div>
+</section>
+</main>
+<footer>© <span id="an">2026</span> Laurel WAMBALE. Tous droits réservés.</footer>
+<!-- Le span id="an" : l'année est mise à jour automatiquement par le JavaScript -->
+</div>
+<script>
+
+/* ===== JAVASCRIPT : le comportement dynamique de la page ===== */
+/* Tout est dans une fonction qui s'exécute immédiatement.
+Ça évite de mélanger nos variables avec celles d'autres scripts. */
+
+var T={
+    fr:{
+        nav_about:"À propos",nav_projects:"Projets",
+        hero_title:"J’automatise, je protège, je construis avec l’IA.",
+        hero_lead:"Étudiant en informatique appliquée à l’Université de Moncton. Je travaille sur l’intelligence artificielle, la cybersécurité et l’automatisation.",
+        about_title:"À propos",
+        projects_title:"Projets",
+        projects_view_code:"Voir le code",
+        contact_title:"Me joindre",
+        contact_email:"Écrire un courriel",
+    },
+    en:{
+        nav_about:"About",nav_projects:"Projects",
+        hero_title:"I automate, I protect, I build with AI.",
+        hero_lead:"Student in applied computer science at the University of Moncton. I work on artificial intelligence, cybersecurity and automation.",
+        about_title:"About",
+        projects_title:"Projects",
+        projects_view_code:"View code",
+        contact_title:"Contact me",
+        contact_email:"Send an email",
+    }
+};
+
+function setLang(l){
+    document.documentElement.lang=l;
+    document.querySelectorAll("[data-i18n]").forEach(function(e){
+        var t=T[l][e.dataset.i18n];
+        if(t!==undefined) {e.textContent=t;} /* si la cle manque dans le dictionnaire, on ne change pas le texte, on garde le texte actuel */
+    });
+
+    document.querySelectorAll(".lang button").forEach(function(b){
+        b.setAttribute("aria-pressed",b.dataset.lang===l?"true":"false");
+    });
+
+    try{localStorage.setItem("lang",l);}catch(e){} /* on essaie de mémoriser la langue choisie, mais si le navigateur bloque localStorage, on continue quand même */
+
+    /*la fonction se termine ici, mais on peut ajouter d'autres actions à faire quand la langue change*/
+}
+
+/* ===== Code qui s'exécute quand la page est chargée ===== */
+/*ces lignes sont maintenant endehors de la fonction setLang, elles s'exécutent une seule fois au chargement de la page*/
+
+document.querySelectorAll(".lang button").forEach(function(b){
+    b.addEventListener("click",function(){setLang(b.dataset.lang);});
+});
+
+var saved="fr"; /* valeur par défaut */
+try{saved=localStorage.getItem("lang")||(navigator.language("en")===0?"en":"fr");}catch(e){} /* on essaie de récupérer la langue mémorisée, sinon on prend la langue du navigateur, sinon on prend le français */
+setLang(saved); /* on applique la langue choisie ou par défaut */
+
+(function(){
+/* ---------- 1. Animation du « terminal » ---------- */
+// Les lignes à afficher, une par une
+var lines=[
+"<b>$</b> analyse --cible portfolio",
+"Étape 1 : vérifier les dépendances … ok",
+"Étape 2 : automatiser les tâches … ok",
+"Étape 3 : protéger les accès … ok",
+"<b>Résultat :</b> prêt à collaborer."
+];
+var el=document.getElementById("log"); // trouve la boîte du terminal grâce à son id
+var reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+// reduce = true si le visiteur a désactivé les animations dans son système
+if(reduce){
+el.innerHTML=lines.join("<br>"); // sans animation : tout afficher d'un coup
+} else {
+var i=0; // i = numéro de la ligne en cours
+(function next(){ // fonction qui s'appelle elle-même
+if(i>=lines.length) return; // toutes les lignes sont affichées : on arrête
+el.innerHTML += (i ? "<br>" : "") + lines[i++]; // ajoute la ligne suivante
+setTimeout(next,700); // attend 700 ms avant la prochaine
+})();
+}
+/* ---------- 2. Filtre des projets ---------- */
+var bs=document.querySelectorAll(".filters button"); // tous les boutons de filtre
+var cs=document.querySelectorAll(".card"); // toutes les cartes de projet
+bs.forEach(function(b){ // pour chaque bouton...
+b.addEventListener("click",function(){ // ...quand on clique dessus :
+// 1) marque le bouton cliqué comme actif, les autres comme inactifs
+bs.forEach(function(x){
+x.setAttribute("aria-pressed", x===b ? "true" : "false");
+});
+// 2) cache ou montre chaque carte selon sa catégorie
+cs.forEach(function(c){
+c.hidden = !(b.dataset.f==="all" || c.dataset.c===b.dataset.f);
+// « Tous » montre tout ; sinon on montre seulement les cartes de la bonne catégorie
+});
+});
+});
+/* ---------- 3. Année automatique dans le pied de page ---------- */
+document.getElementById("an").textContent=new Date().getFullYear();
+})();
+</script>
+</body>
+</html>
